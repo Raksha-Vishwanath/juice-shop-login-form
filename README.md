@@ -18,3 +18,11 @@ This project is a simple login for OWASP Juice Shop. It demonstrates both client
 - Server-side validation:
   - Validates input again for security
   - Returns appropriate messages
+
+## How to Run
+1. Install Node.js
+2. Navigate to the project folder
+3. Run:
+   node server.js
+4. Open browser:
+   http://localhost:3000/
