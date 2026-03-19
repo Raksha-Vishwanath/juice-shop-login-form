@@ -4,7 +4,7 @@ const path = require('path');
 
 const server = http.createServer((req, res) => {
 
-    // 🔹 Serve CSS
+    // Serve CSS
     if (req.method === 'GET' && req.url === '/style.css') {
         fs.readFile(path.join(__dirname, 'style.css'), (err, data) => {
             if (err) {
@@ -17,7 +17,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // 🔹 Serve JS
+    // Serve JS
     else if (req.method === 'GET' && req.url === '/script.js') {
         fs.readFile(path.join(__dirname, 'script.js'), (err, data) => {
             if (err) {
@@ -30,7 +30,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // 🔹 Serve HTML
+    // Serve HTML
     else if (req.method === 'GET' && req.url === '/') {
         fs.readFile(path.join(__dirname, 'index.html'), (err, data) => {
             if (err) {
@@ -43,7 +43,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // 🔹 Handle login (POST request)
+    // LOGIN ROUTE
     else if (req.method === 'POST' && req.url === '/login') {
         let body = '';
 
@@ -53,24 +53,27 @@ const server = http.createServer((req, res) => {
 
         req.on('end', () => {
             try {
-                const parsedData = JSON.parse(body);  // ✅ parse JSON
+                const parsedData = JSON.parse(body);
                 const email = parsedData.email;
                 const password = parsedData.password;
 
-                let message = "";
-
+                // Basic validation
                 if (!email || !password) {
-                    message = 'Fields cannot be empty';
-                } else if (!email.includes('@')) {
-                    message = 'Invalid email format';
-                } else if (password.length < 8) {
-                    message = 'Password must be at least 8 characters';
-                } else {
-                    message = 'Login successful (demo)';
+                    res.writeHead(200, { 'Content-Type': 'text/html' });
+                    res.end('<h3>Fields cannot be empty</h3>');
+                } 
+                else if (!email.includes('@')) {
+                    res.writeHead(200, { 'Content-Type': 'text/html' });
+                    res.end('<h3>Invalid email format</h3>');
+                } 
+                else if (password.length < 8) {
+                    res.writeHead(200, { 'Content-Type': 'text/html' });
+                    res.end('<h3>Password must be at least 8 characters</h3>');
+                } 
+                else {
+                    res.writeHead(200, { 'Content-Type': 'text/html' });
+                    res.end(`<h2>Welcome ${email}</h2>`);
                 }
-
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ message }));
 
             } catch (error) {
                 res.writeHead(400);
@@ -79,7 +82,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // 🔹 404 for everything else
+    // 404
     else {
         res.writeHead(404);
         res.end('404 Not Found');

@@ -28,8 +28,11 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
         },
         body: JSON.stringify({ email, password })
     })
-    .then(res => res.json())
+    .then(res => res.text())
     .then(data => {
-        alert(data.message);
-    });
+        document.open();
+        document.write(data);
+        document.close();
+    })
+    .catch(err => console.error(err));
 });
